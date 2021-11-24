@@ -5,6 +5,13 @@ Created on Wed Nov 24 14:58:02 2021
 @author: Leon
 """
 
+'''
+Probleme:
+    inhaltliches Verständnis
+    stimmt unsere Logarithmierung und Normierung?
+    wie macht man das mit dem Dezibel Abfall?
+'''
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import wavfile
@@ -24,6 +31,10 @@ for i in range(-1, (data.size)*-1, -1):
 #rausrechnen der Samplerate -> Normierung...     ??
 array_integr = array_integr/samplerate
 
+array_log_integr = np.zeros((data.size))
+array_log_integr = np.log(array_integr) / np.log(np.max(array_integr))
+
 #Anzeige in Sekunden fehlt noch 
-plt.plot(array_integr)
+plt.plot(array_log_integr)
 plt.show()
+
