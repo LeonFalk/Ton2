@@ -5,6 +5,7 @@ Created on Wed Nov 24 14:58:02 2021
 @author: Leon
 """
 
+# Könnt ihr das lesen? Dann klappt' mit GitHub. Vanessa
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import wavfile
