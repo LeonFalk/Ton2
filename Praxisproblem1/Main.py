@@ -5,7 +5,6 @@ Created on Wed Nov 24 14:58:02 2021
 @author: Leon
 """
 
-<<<<<<< HEAD
 '''
 Probleme:
     inhaltliches Verständnis
@@ -13,9 +12,6 @@ Probleme:
     wie macht man das mit dem Dezibel Abfall?
 '''
 
-=======
-# Könnt ihr das lesen? Dann klappt' mit GitHub. Vanessa
->>>>>>> 4a823e357071e066f85a1df81ee80becf734eea1
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import wavfile
