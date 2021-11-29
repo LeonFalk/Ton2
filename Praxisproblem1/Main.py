@@ -18,9 +18,7 @@ print(data.size, samplerate, data)
 array_integr = np.zeros((data.size))
 
 for i in range(-1, (data.size)*-1, -1):
-     #y = y + data[i]**2                    #-> diese Rechnung ist falsch
      y = y + np.square(data[i])             #-> diese ist richtig, da sie nur die neuen Daten quadriert
-     
      array_integr[i] = y
 
 #   rausrechnen der Samplerate -> Normierung...
@@ -32,7 +30,7 @@ array_log_integr = 10 * (np.log10(array_integr) - np.log10(np.max(array_integr))
 #Anzeige in Sekunden fehlt noch -> der Plot sollte noch angepasst werden und beides anzeigen + die x-Achse angepasst werden und beide Beschriftet werden
 #   Energieabfall
 #plt.plot(array_integr)
-# Energieabfall Logarithmiert [Dezibel]
+#   Energieabfall Logarithmiert [Dezibel]
 plt.plot(array_log_integr)
 plt.show()
 
