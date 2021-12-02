@@ -17,7 +17,10 @@ def master_of_integration(start_value, stop_value, data):
     y = 0
     array_integr = np.zeros((stop_value))
     
-    for i in range((start_value)*-1, (stop_value)*-1, -1):
+    start_value = start_value*(-1)
+    stop_value = stop_value*(-1)
+    
+    for i in range(start_value, stop_value, -1):
          y = y + np.square(data[i])
          array_integr[i] = y
     return array_integr
@@ -28,10 +31,7 @@ def berechnen_T60(array, samplerate):
     print("Nachhallzeit T60: ", (value_15 - value_5)/samplerate *6, " Sekunden")
 
 def ausgabe_plot(array):
-#Anzeige in Sekunden fehlt noch -> der Plot sollte noch angepasst werden und beides anzeigen + die x-Achse angepasst werden und beide Beschriftet werden
-#   Energieabfall
-#   plt.plot(array_integr)
-#   Energieabfall Logarithmiert [Dezibel]
+###     Anzeige in Sekunden fehlt noch -> der Plot sollte noch angepasst werden und beides anzeigen + die x-Achse angepasst werden und beide Beschriftet werden
     plt.plot(array)
     plt.show()
     
@@ -48,15 +48,15 @@ array_integr = master_of_integration(data, int(stop_value))
 
 def main():
 ###     Einlesen des Wavefiles
-    samplerate, data = wavfile.read('Datei_1.wav')
+    samplerate, data    = wavfile.read('Datei_1.wav')
 
-###     Aufruf Integration
-    array_integr = master_of_integration(1, int(data.size), data)
+###     Aufruf Integration von NULL bis data.size
+    array_integr        = master_of_integration(1, int(data.size), data)
      
 ###     Normieren und Logarithmieren
-    array_integr = array_integr/samplerate
-    array_log_integr = np.zeros(data.size)
-    array_log_integr = 10 * (np.log10(array_integr) - np.log10(np.max(array_integr)))
+    array_integr        = array_integr/samplerate
+    array_log_integr    = np.zeros(data.size)
+    array_log_integr    = 10 * (np.log10(array_integr) - np.log10(np.max(array_integr)))
 
 ###     Plot ausgeben
     ausgabe_plot(array_integr)
@@ -67,28 +67,23 @@ def main():
 #    ausgabe_plot(-> T60 Gerade)
 
 ###     C50 berechnen
-#   0 bis 50
-#    c50_zaehler = np.max(master_of_integration(0, int(0.05*samplerate), data))
-#   50 bis inf
-#    c50_nenner = np.max(master_of_integration(int(0.05*samplerate), int(data.size), data))
-#   ausrechnen
+###      0 bis 50ms
+#    c50_zaehler        = np.max(master_of_integration(0, int(0.05*samplerate), data))
+###    50ms bis inf
+#    c50_nenner         = np.max(master_of_integration(int(0.05*samplerate), int(data.size), data))
+###     ausrechnen
 #    print(10 * np.log10(c50_zaehler/c50_nenner))
 
 ###     C80 berechnen
-#   0 bis 80
+###     0 bis 80ms
 #    c80_zaehler = np.max(master_of_integration(0, int(0.08*samplerate), data))
-#   80 bis inf
+###     80ms bis inf
 #    c80_nenner = np.max(master_of_integration(int(0.08*samplerate), int(data.size), data))
-#   ausrechnen
+###     ausrechnen
 #    print(10 * np.log10(c80_zaehler/c80_nenner))
     
     
     
     
-    
-    
-    
-    
-    
-    
+###     MAIN    
 main()
