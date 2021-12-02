@@ -4,9 +4,6 @@ Created on Wed Nov 24 14:58:02 2021
 
 @author: Leon
 
-Fragen:
-    x Achse Skalieren
-    durch 0 teilen Fehler
 """
 
 import matplotlib.pyplot as plt
@@ -57,22 +54,18 @@ def main():
 
 ###     Plot ausgeben
     fig, axs = plt.subplots(2)
-
+    x = np.linspace(0., data.size/samplerate, data.size)
 #    ausgabe_plot(array_integr, "array number", "Energie")
     axs[0].set_title("Energieabfall")
     axs[0].set_xlabel("Zeit in Sekunden")
     axs[0].set_ylabel("Energie")
-    
-
-    axs[0].plot(array_integr)
+    axs[0].plot(x ,array_integr)
 
 #    ausgabe_plot(array_log_integr, "array number", "dB")
     axs[1].set_title("Energieabfall Logarithmiert")
     axs[1].set_xlabel("Zeit in Sekunden")
     axs[1].set_ylabel("dB")
-
-    axs[1].plot(array_log_integr)
-    
+    axs[1].plot(x, array_log_integr)
     fig.tight_layout()
 
 
