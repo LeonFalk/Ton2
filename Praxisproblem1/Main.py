@@ -48,7 +48,7 @@ def main():
 ###     Normieren und Logarithmieren
     array_integr        = array_integr/samplerate
     print("Samplerate: \t\t\t\t", samplerate)
-    print("Gesamtenergie des Signals: ", np.round(np.max(array_integr), 2))
+    print("Gesamtenergie des Signals:\t", np.round(np.max(array_integr), 2))
     array_log_integr    = np.zeros(data.size)
     array_integr[array_integr == 0] = 0.0000001                     #NULL-Werte auf kleinen Wert setzen, um Divisionsfehler(/0) zu umgehen
     array_log_integr    = 10 * (np.log10(array_integr) - np.log10(np.max(array_integr)))
