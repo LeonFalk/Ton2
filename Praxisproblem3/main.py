@@ -33,8 +33,8 @@ def ausgabe(samplerate, array):
     plt.show()
 
     ###     Sound-Ausgabe
-    ###sd.play(array, samplerate)
-    ###sf.write('convolved.flac', array, samplerate)
+    sd.play(array, samplerate)
+    ###sf.write('name.flac', array, samplerate)
 
 
 def main():
@@ -42,13 +42,13 @@ def main():
     ### Testsignal auswerten und einlesen
     testsignal = input("Wollen Sie Testsignal 1 oder 2 auswerten?\n")
     
-    if testsignal == '1':
-        testsignal = 'testsignal1.wav'
+    if testsignal   == '1':
+        testsignal  = 'testsignal1.wav'
     elif testsignal == '2':
-        testsignal = 'testsignal2.wav'
+        testsignal  = 'testsignal2.wav'
     else: 
         print("Fehleingabe -> Testsignal 1 wird genutzt")
-        testsignal = 'testsignal1.wav'
+        testsignal  	= 'testsignal1.wav'
        
     samplerate, data    = wavfile.read(testsignal)
     
@@ -57,13 +57,13 @@ def main():
         y_R = data[:, 1]
         data = (y_L + y_R) /2
     
-    ### Normierung ?
+    ### Normierung -> ?
     data = data / samplerate
     
     ### Testausgabe
-    
     print("Testausgabe data")
     ausgabe(samplerate, data)
+    ### Delay Einbauen
     
     ### System A: Distortion Effekt
     ### y = -0.5/np.tan(x + (np.pi / 2))  
@@ -76,7 +76,7 @@ def main():
         
         '''
         ### testweise Beschneidung
-        c = 100
+        c = 1000
         if array_y[i] > c:
             array_y[i] = c
         elif array_y[i] < c*-1:
@@ -84,10 +84,10 @@ def main():
         '''
     
     ### Testausgabe
-    
     print("Testausgabe array_y")
     ausgabe(samplerate, array_y)
     
+    ### Faltung zwischen Distortion Array (array_y) und dem Testsignal (data)
     array_convolve = np.convolve(array_y, data)
     
     ### Testausgabe
