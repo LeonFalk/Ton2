@@ -71,17 +71,28 @@ def main():
     array_x = np.arange(data.size)
     array_y = np.zeros(data.size)
     
+    ### Neue Vorgehensweise -> Multiplikation
+    for i in range(data.size):
+        data[i] = -0.5/np.tan(data[i] + np.pi / 2)
+
+    ### Testausgabe
+    print("Testausgabe data")
+    ausgabe(samplerate, data)        
+    
+    
+    ### Alte Vorgehensweise -> Faltung
+    '''
     for i in range(data.size):
         array_y[i] = -0.5/np.tan(array_x[i] + np.pi / 2)
         
-        '''
+        
         ### testweise Beschneidung
-        c = 1000
-        if array_y[i] > c:
-            array_y[i] = c
-        elif array_y[i] < c*-1:
-            array_y[i] = c*-1
-        '''
+        ###c = 1000
+        ###if array_y[i] > c:
+        ###    array_y[i] = c
+        ###elif array_y[i] < c*-1:
+        ###   array_y[i] = c*-1
+        
     
     ### Testausgabe
     print("Testausgabe array_y")
@@ -93,7 +104,7 @@ def main():
     ### Testausgabe
     print("Testausgabe Convolve")
     ausgabe(samplerate, array_convolve)
-
+    '''
         
 #####################
 main()
