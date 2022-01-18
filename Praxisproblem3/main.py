@@ -22,19 +22,33 @@ import numpy as np
 from scipy.io import wavfile
 import sounddevice as sd
 import soundfile as sf
+import time
 
-def ausgabe(samplerate, array):
+def ausgabe(samplerate, array, s_or_hz):
     print(array)
+    
+    if s_or_hz == 's':
+        x = np.linspace(0., array.size/samplerate, array.size)
+    elif s_or_hz == 'hz':
+        array = np.resize(array, int(20000))
+        x = np.linspace(0., array.size, array.size)
+
     
     ###     Plot ausgeben
     fig, ax = plt.subplots()
-    ax.plot(array)
+    
+
+    
+    ax.plot(x, array)
     ax.grid()
     plt.show()
 
     ###     Sound-Ausgabe
-    sd.play(array, samplerate)
-    ###sf.write('name.flac', array, samplerate)
+    #sd.play(array, samplerate)
+    #sf.write('name.flac', array, samplerate)
+    
+    sekunden = array.size/samplerate
+    time.sleep(sekunden)
 
 
 def main():
@@ -62,22 +76,28 @@ def main():
     
     ### Testausgabe
     print("Testausgabe data")
-    ausgabe(samplerate, data)
+    ausgabe(samplerate, data, 's')
     ### Delay Einbauen
+    
+    fft_data = np.fft.fft(data)
+    ausgabe(samplerate, fft_data, 'hz')
     
     ### System A: Distortion Effekt
     ### y = -0.5/np.tan(x + (np.pi / 2))  
     
-    array_x = np.arange(data.size)
-    array_y = np.zeros(data.size)
+    #array_x = np.arange(data.size)
+    #array_y = np.zeros(data.size)
     
-    ### Neue Vorgehensweise -> Multiplikation
+    ### Neue Vorgehensweise
     for i in range(data.size):
         data[i] = -0.5/np.tan(data[i] + np.pi / 2)
 
     ### Testausgabe
     print("Testausgabe data")
-    ausgabe(samplerate, data)        
+    ausgabe(samplerate, data, 's')     
+    
+    fft_data = np.fft.fft(data)
+    ausgabe(samplerate, fft_data, 'hz')
     
     
     ### Alte Vorgehensweise -> Faltung
