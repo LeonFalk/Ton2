@@ -29,76 +29,95 @@ def ausgabe(samplerate, array, s_or_hz):
     
     if s_or_hz == 's':
         x = np.linspace(0., array.size/samplerate, array.size)
+        plt.xlabel("Zeit, s")
+        plt.ylabel("Amplitude, units")
+        
+        ###     Sound-Ausgabe
+        #sd.play(array, samplerate)
+        #sf.write('name.flac', array, samplerate)
+        #sekunden = array.size/samplerate
+        #time.sleep(sekunden)
+        
     elif s_or_hz == 'hz':
-        array = np.resize(array, int(20000))
-        x = np.linspace(0., array.size, array.size)
-
-    
+        x = samplerate
+        plt.xlabel("frequency, Hz")
+        plt.ylabel("Amplitude, units")
+        
     ###     Plot ausgeben
-    fig, ax = plt.subplots()
-    
-
-    
-    ax.plot(x, array)
-    ax.grid()
+    plt.plot(x, array)
     plt.show()
 
-    ###     Sound-Ausgabe
-    #sd.play(array, samplerate)
-    #sf.write('name.flac', array, samplerate)
+
     
-    sekunden = array.size/samplerate
-    time.sleep(sekunden)
+    ### Sinus Generator
+def singenerator(samplerate):
+    duration = 1
+    samples = duration * samplerate
+    
+    
+    x = np.arange(0, samples)
+    t = x / samplerate
+    
+    
+    sinus_testsignal = 1 * np.sin(2 * np.pi * 100 * t)
+    return sinus_testsignal
 
 
 def main():
-    
     ### Testsignal auswerten und einlesen
-    testsignal = input("Wollen Sie Testsignal 1 oder 2 auswerten?\n")
+    
+    testsignal = input("Wollen Sie Testsignal 1, 2 oder 3(Sinus) auswerten?\n")
     
     if testsignal   == '1':
         testsignal  = 'testsignal1.wav'
+        samplerate, data    = wavfile.read(testsignal)
+        
+        if data.ndim == 2:
+            y_L = data[:, 0]
+            y_R = data[:, 1]
+            data = (y_L + y_R) /2
+        data = data / samplerate
     elif testsignal == '2':
         testsignal  = 'testsignal2.wav'
-    else: 
-        print("Fehleingabe -> Testsignal 1 wird genutzt")
-        testsignal  	= 'testsignal1.wav'
-       
-    samplerate, data    = wavfile.read(testsignal)
-    
-    if data.ndim == 2:
-        y_L = data[:, 0]
-        y_R = data[:, 1]
-        data = (y_L + y_R) /2
-    
-    ### Normierung -> ?
-    data = data / samplerate
-    
-    ### Testausgabe
-    print("Testausgabe data")
+        samplerate, data    = wavfile.read(testsignal)
+        
+        if data.ndim == 2:
+            y_L = data[:, 0]
+            y_R = data[:, 1]
+            data = (y_L + y_R) /2
+        data = data / samplerate
+    elif testsignal == '3':
+        samplerate = 48000
+        data = singenerator(samplerate)
+              
+  
+    print("Unverfälschtes Signal") 
     ausgabe(samplerate, data, 's')
-    ### Delay Einbauen
     
-    fft_data = np.fft.fft(data)
-    ausgabe(samplerate, fft_data, 'hz')
+    fft_spectrum = np.fft.rfft(data)
+    freq = np.fft.rfftfreq(data.size, d=1./samplerate)
+        
+    fft_spectrum_abs = np.abs(fft_spectrum)
+
+    print('Unverfälschtes Signal Spektrum')
+    ausgabe(freq, fft_spectrum_abs, 'hz')
     
-    ### System A: Distortion Effekt
-    ### y = -0.5/np.tan(x + (np.pi / 2))  
-    
-    #array_x = np.arange(data.size)
-    #array_y = np.zeros(data.size)
-    
-    ### Neue Vorgehensweise
+    ### Bearbeiten mit Kennlinie
     for i in range(data.size):
         data[i] = -0.5/np.tan(data[i] + np.pi / 2)
 
-    ### Testausgabe
-    print("Testausgabe data")
+
+    print("Bearbeitetes Signal")
     ausgabe(samplerate, data, 's')     
     
-    fft_data = np.fft.fft(data)
-    ausgabe(samplerate, fft_data, 'hz')
     
+    fft_spectrum = np.fft.rfft(data)
+    freq = np.fft.rfftfreq(data.size, d=1./samplerate)
+    
+    fft_spectrum_abs = np.abs(fft_spectrum)
+
+    print('Bearbeitetes Signal Spektrum')
+    ausgabe(freq, fft_spectrum_abs, 'hz')
     
     ### Alte Vorgehensweise -> Faltung
     '''
