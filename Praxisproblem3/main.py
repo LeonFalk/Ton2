@@ -21,17 +21,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import wavfile
 import sounddevice as sd
-import soundfile as sf
+###import soundfile as sf
 import time
-
+import math
 def ausgabe(samplerate, array, s_or_hz):
-    print(array)
+    ###print(array)
     
     if s_or_hz == 's':
         x = np.linspace(0., array.size/samplerate, array.size)
         plt.xlabel("Zeit, s")
         plt.ylabel("Amplitude, units")
-        
         ###     Sound-Ausgabe
         #sd.play(array, samplerate)
         #sf.write('name.flac', array, samplerate)
@@ -59,7 +58,7 @@ def singenerator(samplerate):
     t = x / samplerate
     
     
-    sinus_testsignal = 1 * np.sin(2 * np.pi * 100 * t)
+    sinus_testsignal = 1 * np.sin(2 * np.pi * 2000 * t)
     return sinus_testsignal
 
 
@@ -89,25 +88,26 @@ def main():
     elif testsignal == '3':
         samplerate = 48000
         data = singenerator(samplerate)
-              
-  
-    print("Unverfälschtes Signal") 
+        data_b = singenerator(samplerate)
+    
+    plt.title('Unverfälschtes Signal')
     ausgabe(samplerate, data, 's')
+    
     
     fft_spectrum = np.fft.rfft(data)
     freq = np.fft.rfftfreq(data.size, d=1./samplerate)
         
     fft_spectrum_abs = np.abs(fft_spectrum)
-
-    print('Unverfälschtes Signal Spektrum')
+    
+    plt.title('Unverfälschtes Signal Spektrum')
     ausgabe(freq, fft_spectrum_abs, 'hz')
+    
     
     ### Bearbeiten mit Kennlinie
     for i in range(data.size):
         data[i] = -0.5/np.tan(data[i] + np.pi / 2)
 
-
-    print("Bearbeitetes Signal")
+    plt.title('Bearbeitetes Signal System A')
     ausgabe(samplerate, data, 's')     
     
     
@@ -116,8 +116,62 @@ def main():
     
     fft_spectrum_abs = np.abs(fft_spectrum)
 
-    print('Bearbeitetes Signal Spektrum')
+    plt.title('Bearbeitetes Signal Spektrum System A')
     ausgabe(freq, fft_spectrum_abs, 'hz')
+    
+    
+    testarray = []
+    for i in range(fft_spectrum_abs.size):
+        if fft_spectrum_abs[i] > 1:
+            testarray.append(fft_spectrum_abs[i])
+        else:
+            pass
+        
+    ### Klirrfaktor
+    testarray_square = np.square(testarray)
+    klirrfaktor = math.sqrt((testarray_square[1]+testarray_square[2])/(testarray_square[0]+testarray_square[1]+testarray_square[2]))*100
+    print()
+    print('Klirrfaktor System A')
+    print(round(klirrfaktor),'%')
+    
+    ### System B 
+    VarC = 0.5
+    VarCn = -0.5
+    for i in range(data_b.size):
+        if data_b[i] >= VarC:
+            data_b[i] = VarC
+        
+        elif data_b[i] <= VarCn:
+            data_b[i] = VarCn
+    
+    else:
+        pass
+    plt.title('Bearbeitetes Signal System B')
+    ausgabe(samplerate, data_b, 's')
+
+    
+    fft_spectrum_b = np.fft.rfft(data_b)
+    freq_b = np.fft.rfftfreq(data_b.size, d=1./samplerate)
+    
+    fft_spectrum_abs_b = np.abs(fft_spectrum_b)
+
+    plt.title('Bearbeitetes Signal Spektrum System B')
+    ausgabe(freq_b, fft_spectrum_abs_b, 'hz')
+    
+    testarray = []
+    testarray_square = []
+    
+    for i in range(fft_spectrum_abs_b.size):
+        if fft_spectrum_abs_b[i] > 1:
+            testarray.append(fft_spectrum_abs_b[i])
+        else:
+            pass 
+    testarray_square = np.square(testarray)
+    klirrfaktor = math.sqrt((testarray_square[1]+testarray_square[2])/(testarray_square[0]+testarray_square[1]+testarray_square[2]))*100
+    print('Klirrfaktor System B')
+    print(round(klirrfaktor),'%')
+    print(testarray)
+    
     
     ### Alte Vorgehensweise -> Faltung
     '''
