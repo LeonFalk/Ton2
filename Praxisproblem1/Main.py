@@ -2,7 +2,7 @@
 """
 Created on Wed Nov 24 14:58:02 2021
 
-@author: Leon
+@author: Leon, Vanessa, Max, Jakob
 
 """
 
@@ -32,10 +32,15 @@ def berechnen_T60(array, samplerate):
     print("Nachhallzeit T60: \t\t\t", np.round((value_15 - value_5)/samplerate *6, 2), " Sekunden")
 
 def main():
-###     Einlesen des Wavefiles
-    samplerate, data    = wavfile.read('Datei_1.wav')
-###     Testdatei von Frau Wilk
-#    samplerate, data    = wavfile.read('test_h_von_t.wav')
+    ###     Einlesen des Wavefiles
+    eingabe = input("Welches Signal wollen Sie auswerten? (1==Datei_1.wav; 2== test_h_von_t.wav)\n")
+    if (eingabe == '1'):
+        samplerate, data    = wavfile.read('Datei_1.wav')
+    elif (eingabe == '2'):
+        samplerate, data    = wavfile.read('test_h_von_t.wav')
+    else:
+        print("Fehleingabe. Bitte starten Sie neu.")
+
 ###     Wavedatei in Mono umwandeln, wenn Stereo    
     if data.ndim == 2:
         y_L = data[:, 0]
