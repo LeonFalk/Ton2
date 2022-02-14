@@ -8,13 +8,7 @@ Ein Distortion-Effekt wird mit Hilfe einer nichtlinearen Kennlinie erzeugt.
 Programmieren Sie die vorgegebenen Kennlinien, verzerren Sie die Test-Signale damit, 
 und berechnen Sie den Klirrfaktor der Systeme.
 
-Kennlinie 8:  y = -0.5/tan(x+π/2)  
-
-
-Fragen:
-    Ist unser Tangens korrekt?
-    bzw was ist los?
-    
+Kennlinie 8:  y = -0.5/tan(x+π/2)      
 """
 
 import matplotlib.pyplot as plt
@@ -80,11 +74,23 @@ def klirrfaktor_berechnen(title, fft_spectrum):
             pass
             
 ###     Klirrfaktor berechnen
-    fft_spectrum_square = np.square(fft_spectrum_filtered)
-    klirrfaktor = math.sqrt((fft_spectrum_square[1]+fft_spectrum_square[2])/(fft_spectrum_square[0]+fft_spectrum_square[1]+fft_spectrum_square[2]))*100
-
-    print('\nKlirrfaktor des Systems ', title,':\t',  round(klirrfaktor),'%')
-
+    sortierung = np.argsort(fft_spectrum)
+    Gesamtenergie = 0
+    Oberschwingung = 0
+    Grundschwingung = 0
+    
+    for n in range (-1, -5, -1):
+        
+        if n == -1:
+            Grundschwingung += np.square(fft_spectrum[n])
+        elif n < -1:
+            Oberschwingung += np.square(fft_spectrum[n])
+    
+    klirrfaktor = math.sqrt((Oberschwingung/(Oberschwingung + Grundschwingung)))
+    thd = math.sqrt(Oberschwingung/Grundschwingung)
+        
+    print('\nKlirrfaktor des Systems ', title,':\t',  np.round(klirrfaktor, 3),'%')
+    print('THD des Systems ', title,':\t\t\t',  np.round(thd, 3),'%')
 
 
 ###############################################################################
