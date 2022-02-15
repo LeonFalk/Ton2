@@ -102,7 +102,7 @@ def klirrfaktor_berechnen(title, fft_spectrum):
 
 def main():
     ### Testsignal einlesen
-    testsignal = input("Wollen Sie Testsignal 1 (Sinus), 2 oder 3 auswerten?\n")
+    testsignal = input("Wollen Sie Signal 1 (Sinus), 2 (Testsignal 1) oder 3 (Testsignal 2) auswerten?\n")
     
     if testsignal   == '2':
         testsignal  = 'testsignal1.wav'
