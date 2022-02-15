@@ -134,7 +134,11 @@ def main():
     
 ###     FFT
     fft_spectrum = FFT(data, samplerate)
+    
+    ###     Klirrfaktor berechnen
+    klirrfaktor_berechnen('Ausgang', fft_spectrum)
   
+###     System A anwenden       ###############################################
 ###     Bearbeiten mit Kennlinie
     data_bearbeitet_a = np.array(data)
     for i in range(data.size):
