@@ -39,10 +39,10 @@ def ausgabe(title, samplerate, array, s_or_hz):
         plt.ylabel("Amplitude, units")
         
         ###     Sound-Ausgabe zum testen bzw. speichern der veränderten Datei
-        #sd.play(array, samplerate)
+        sd.play(array, samplerate)
         #sf.write('name.flac', array, samplerate)
-        #sekunden = array.size/samplerate
-        #time.sleep(sekunden)
+        sekunden = array.size/samplerate
+        time.sleep(sekunden)
         
     elif s_or_hz == 'hz':
         x = samplerate
