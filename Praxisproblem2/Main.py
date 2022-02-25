@@ -13,10 +13,10 @@ from time import sleep
 
 ###     Audiodateien einlesen
 
-samplerate, data1    = read('Datei_1.wav')
+samplerate, data1    = read('pinknoise.wav')
 array1 = np.array(data1)
 
-samplerate, data2    = read('Datei_2.wav')
+samplerate, data2    = read('sine.wav')
 array2 = np.array(data2)
         
 
