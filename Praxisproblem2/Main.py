@@ -9,7 +9,6 @@ Created on Tue Feb 15 08:17:31 2022
 import numpy as np
 from scipy.io.wavfile import read, write
 import sounddevice as sd
-from time import sleep
 
 ###     Audiodateien einlesen
 
@@ -214,35 +213,56 @@ def main():
     
     print("Signal 1")
     print("Pegelerhöhung auf linkem Kanal um 4,6 dB")
-    Pegeldifferenzen (array1, float(4.6), "L") #50%
+    array_neu_1 = Pegeldifferenzen (array1, float(4.6), "L") #50%
     print("Laufzeitversatz auf linkem Kanal um 0,32 ms")
-    Laufzeitdifferenzen (array2, float(0.32), "L") #50%
+    Laufzeitdifferenzen (array_neu_1, float(0.32), "L") #50%
     
     ### SIGNAL 2
     
     print("Signal 2")
     print("Pegelerhöhung auf rechtem Kanal um 4,6 dB")
-    Pegeldifferenzen (array2, float(4.6), "R") #50%
+    array_neu_2 = Pegeldifferenzen (array2, float(4.6), "R") #50%
     print("Laufzeitversatz auf rechtemKanal um 0,32 ms")
-    Laufzeitdifferenzen (array2, float(0.32), "R") #50%
+    Laufzeitdifferenzen (array_neu_2, float(0.32), "R") #50%
         
         
 ### AUFSPALTUNG DER PHANTOMSCHALLQUELLE
         
+    print("d.) Aufspaltung der Phantomschallquelle")
+    
+    ### SIGNAL 1
+    
+    print("Signal 1")
+    print("Laufzeitdifferenz in ms von:")
+    print("0")
+    sd.play(array1)
+    print("1,2")   #100%
+    Laufzeitdifferenzen (array1, float(1.2), "L")
+    print("5")
+    Laufzeitdifferenzen (array1, float(5), "L")
+    print("10")
+    Laufzeitdifferenzen (array1, float(10), "L")
+    print("20")    # Spaltung
+    Laufzeitdifferenzen (array1, float(20), "L")
+    print("30")
+    Laufzeitdifferenzen (array1, float(30), "L")
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    ### SIGNAL 2
+    
+    print("Signal 2")
+    print("Laufzeitdifferenz in ms von:")
+    print("0")
+    sd.play(array2)
+    print("1,2")   #100%
+    Laufzeitdifferenzen (array2, float(1.2), "R")
+    print("5")
+    Laufzeitdifferenzen (array2, float(5), "R")
+    print("10")
+    Laufzeitdifferenzen (array2, float(10), "R")
+    print("20")    # Spaltung
+    Laufzeitdifferenzen (array2, float(20), "R")
+    print("30")
+    Laufzeitdifferenzen (array2, float(30), "R")     
         
         
 ### AUTOMATISCHES WANDERN DES SIGNALS VON LINKS NACH RECHTS   
@@ -251,30 +271,9 @@ def main():
     Wandersignal (array1)
     
     print("Signal 2:")
-    Wandersignal (array1)
+    Wandersignal (array2)
     
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
-    
+  
 ###     Main        ###########################################################
 main()  
     
